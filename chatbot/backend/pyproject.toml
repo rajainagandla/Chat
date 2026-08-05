@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-chatbot-backend"
+version = "1.0.0"
+description = "RAG-based AI chatbot backend (FastAPI + ChromaDB)"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.setuptools]
+packages = ["app"]
+
+# ===== Ruff (linter + formatter) =====
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["app", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501", # line length handled by formatter
+]
+
+[tool.ruff.format]
+quote-style = "double"
+
+# ===== Black (formatter) =====
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+include = '\.pyi?$'
+extend-exclude = '\.venv|venv|__pycache__|data'
+
+# ===== mypy (type checking) =====
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+exclude = ['\.venv|venv|__pycache__|data']
+
+# ===== pytest =====
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+python_files = ["test_*.py"]

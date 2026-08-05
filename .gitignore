@@ -1,0 +1,44 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.venv_test/
+*.pyc
+
+# ===== Env =====
+.env
+*.env.local
+
+# ===== Data =====
+data/
+*.db
+*.sqlite3
+
+# ===== Build / Cache =====
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.pytest_cache/
+*.log
+
+# ===== IDE =====
+.vscode/
+.idea/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Node / Frontend =====
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# ===== Docker =====
+*.tmp
