@@ -30,7 +30,8 @@ class Settings(BaseSettings):
     chroma_persist_dir: str = "./data/chroma"
 
     # ===== Database =====
-    database_url: str = "postgresql+pg8000://chatbot:chatbot@localhost:5432/chatbot"
+    # Host: 127.0.0.1, Port: 5432, Database: chatbot
+    database_url: str = "postgresql+pg8000://chatbot:chatbot@127.0.0.1:5432/chatbot"
 
     # ===== Storage =====
     upload_dir: str = "./data/uploads"
@@ -68,3 +69,4 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+
