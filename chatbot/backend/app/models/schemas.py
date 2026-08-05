@@ -1,6 +1,6 @@
 """Pydantic request/response schemas."""
+
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -40,7 +40,7 @@ class MessageOut(BaseModel):
 # ---------- Chat ----------
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, description="User query")
-    conversation_id: Optional[str] = Field(None, description="Existing conversation id")
+    conversation_id: str | None = Field(None, description="Existing conversation id")
 
 
 class SourceRef(BaseModel):

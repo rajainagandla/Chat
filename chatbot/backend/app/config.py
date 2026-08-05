@@ -1,4 +1,5 @@
 """Application configuration loaded from environment variables."""
+
 from functools import lru_cache
 from pathlib import Path
 
@@ -10,9 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 class Settings(BaseSettings):
     """Central settings for the application."""
 
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", extra="ignore"
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     # ===== Provider =====
     llm_provider: str = "local"  # local | openai
@@ -29,6 +28,9 @@ class Settings(BaseSettings):
 
     # ===== Vector store =====
     chroma_persist_dir: str = "./data/chroma"
+
+    # ===== Database =====
+    database_url: str = "postgresql+pg8000://chatbot:chatbot@localhost:5432/chatbot"
 
     # ===== Storage =====
     upload_dir: str = "./data/uploads"

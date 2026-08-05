@@ -14,9 +14,9 @@ def test_schemas_import():
 
 
 def test_services_import():
-    from app.services.chunkers import chunk_text  # noqa: F401
     from app.services.embeddings import get_embeddings  # noqa: F401
     from app.services.llm import get_llm  # noqa: F401
+    from app.utils.chunkers import chunk_text  # noqa: F401
 
     assert callable(chunk_text)
 

@@ -1,6 +1,6 @@
 """ChromaDB vector store service for document chunk indexing and retrieval."""
+
 from functools import lru_cache
-from typing import List
 
 import chromadb
 from chromadb.config import Settings as ChromaSettings
@@ -20,7 +20,7 @@ class VectorStore:
         self._embeddings = get_embeddings()
         self._collection = self._client.get_or_create_collection(name=COLLECTION_NAME)
 
-    def add_document(self, doc_id: str, filename: str, chunks: List[str]) -> int:
+    def add_document(self, doc_id: str, filename: str, chunks: list[str]) -> int:
         """Embed and index chunks for a document. Returns number of chunks."""
         if not chunks:
             return 0
@@ -33,7 +33,7 @@ class VectorStore:
         self._collection.add(ids=ids, embeddings=vectors, documents=chunks, metadatas=metadatas)
         return len(chunks)
 
-    def search(self, query: str, top_k: int = None) -> List[tuple[str, float, dict]]:
+    def search(self, query: str, top_k: int = None) -> list[tuple[str, float, dict]]:
         """Return list of (text, score, metadata) for the most relevant chunks."""
         top_k = top_k or settings.top_k
         query_embedding = self._embeddings.embed_query(query)
@@ -46,7 +46,7 @@ class VectorStore:
         metas = results["metadatas"][0]
         dists = results["distances"][0]
         out = []
-        for text, meta, dist in zip(docs, metas, dists):
+        for text, meta, dist in zip(docs, metas, dists, strict=True):
             # Chroma returns L2-ish distances; lower is closer. Convert to similarity.
             score = 1.0 / (1.0 + dist)
             out.append((text, score, meta))

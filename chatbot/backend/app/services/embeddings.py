@@ -1,15 +1,15 @@
 """Embedding provider abstraction supporting local (sentence-transformers) and OpenAI."""
+
 from functools import lru_cache
-from typing import List
 
 from ..config import settings
 
 
 class EmbeddingProvider:
-    def embed(self, texts: List[str]) -> List[List[float]]:
+    def embed(self, texts: list[str]) -> list[list[float]]:
         raise NotImplementedError
 
-    def embed_query(self, text: str) -> List[float]:
+    def embed_query(self, text: str) -> list[float]:
         return self.embed([text])[0]
 
     @property
@@ -24,7 +24,7 @@ class LocalEmbeddings(EmbeddingProvider):
         self._model = SentenceTransformer(model_name)
         self._dim = self._model.get_sentence_embedding_dimension()
 
-    def embed(self, texts: List[str]) -> List[List[float]]:
+    def embed(self, texts: list[str]) -> list[list[float]]:
         vectors = self._model.encode(texts, normalize_embeddings=True)
         return [v.tolist() for v in vectors]
 
@@ -41,9 +41,9 @@ class OpenAIEmbeddings(EmbeddingProvider):
         self._model = model
         self._dim = 1536  # text-embedding-3-small default
 
-    def embed(self, texts: List[str]) -> List[List[float]]:
+    def embed(self, texts: list[str]) -> list[list[float]]:
         # Batch in chunks of 64
-        out: List[List[float]] = []
+        out: list[list[float]] = []
         for i in range(0, len(texts), 64):
             batch = texts[i : i + 64]
             resp = self._client.embeddings.create(model=self._model, input=batch)

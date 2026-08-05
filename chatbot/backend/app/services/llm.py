@@ -1,6 +1,7 @@
 """LLM provider abstraction supporting local (Ollama) and OpenAI."""
+
+from collections.abc import Generator
 from functools import lru_cache
-from typing import Generator
 
 from ..config import settings
 
@@ -72,6 +73,7 @@ class OpenAIProvider(LLMProvider):
         self.model = model
         try:
             from openai import OpenAI
+
             self._client = OpenAI(api_key=api_key)
         except ImportError:
             self._client = None

@@ -1,12 +1,11 @@
 """Text chunking utilities for RAG ingestion."""
-from typing import List
 
 from ..config import settings
 
 try:
     from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-    def chunk_text(text: str, chunk_size: int = None, overlap: int = None) -> List[str]:
+    def chunk_text(text: str, chunk_size: int = None, overlap: int = None) -> list[str]:
         chunk_size = chunk_size or settings.chunk_size
         overlap = overlap if overlap is not None else settings.chunk_overlap
         splitter = RecursiveCharacterTextSplitter(
@@ -17,10 +16,11 @@ try:
         return splitter.split_text(text)
 
 except ImportError:  # fallback without langchain
-    def chunk_text(text: str, chunk_size: int = None, overlap: int = None) -> List[str]:
+
+    def chunk_text(text: str, chunk_size: int = None, overlap: int = None) -> list[str]:
         chunk_size = chunk_size or settings.chunk_size
         overlap = overlap if overlap is not None else settings.chunk_overlap
-        chunks: List[str] = []
+        chunks: list[str] = []
         start = 0
         n = len(text)
         while start < n:

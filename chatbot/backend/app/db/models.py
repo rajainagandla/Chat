@@ -1,11 +1,12 @@
 """SQLAlchemy ORM models for documents, conversations, and messages."""
+
 import uuid
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
-from .session import Base
+from .base_class import Base
 
 
 def gen_uuid() -> str:

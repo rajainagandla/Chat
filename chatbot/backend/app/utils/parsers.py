@@ -1,4 +1,5 @@
 """Document parsers for extracting text from various file types."""
+
 from pathlib import Path
 
 

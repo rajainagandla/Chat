@@ -1,4 +1,5 @@
 """Conversation & message persistence helpers."""
+
 from sqlalchemy.orm import Session
 
 from ..db.models import Conversation, Message

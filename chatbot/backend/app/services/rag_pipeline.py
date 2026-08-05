@@ -1,9 +1,10 @@
 """RAG orchestrator: coordinates retrieval and generation for a chat request."""
+
 from sqlalchemy.orm import Session
 
-from .retrieval import retrieve_context
+from .conversation import add_message, get_history, get_or_create_conversation
 from .generation import generate_answer, stream_answer
-from .conversation import get_or_create_conversation, get_history, add_message
+from .retrieval import retrieve_context
 
 
 def answer_query(
@@ -23,8 +24,7 @@ def answer_query(
     results = retrieve_context(query)
     context_chunks = [r["text"] for r in results]
     sources = [
-        {"document": r["metadata"].get("filename", "unknown"), "score": r["score"]}
-        for r in results
+        {"document": r["metadata"].get("filename", "unknown"), "score": r["score"]} for r in results
     ]
 
     # Persist user message
@@ -51,8 +51,7 @@ def stream_query(
     results = retrieve_context(query)
     context_chunks = [r["text"] for r in results]
     sources = [
-        {"document": r["metadata"].get("filename", "unknown"), "score": r["score"]}
-        for r in results
+        {"document": r["metadata"].get("filename", "unknown"), "score": r["score"]} for r in results
     ]
 
     add_message(db, conv_id, "user", query)

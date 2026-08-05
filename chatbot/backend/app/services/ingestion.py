@@ -1,6 +1,7 @@
 """Document ingestion pipeline: parse -> chunk -> embed -> index."""
-from ..utils.parsers import extract_text
+
 from ..utils.chunkers import chunk_text
+from ..utils.parsers import extract_text
 from .vector_store import get_vector_store
 
 

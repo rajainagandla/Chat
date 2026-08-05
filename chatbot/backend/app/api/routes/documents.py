@@ -1,6 +1,9 @@
 """Document upload, listing, and deletion endpoints."""
+
 import uuid
+from contextlib import suppress
 from pathlib import Path
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
@@ -14,6 +17,9 @@ from ...services.vector_store import get_vector_store
 
 router = APIRouter(prefix="/api/documents", tags=["documents"])
 
+DbDep = Annotated[Session, Depends(get_db)]
+FileDep = Annotated[UploadFile, File(...)]
+
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt", ".md"}
 MAX_FILE_SIZE = 25 * 1024 * 1024  # 25 MB
 
@@ -26,7 +32,7 @@ def _validate_file(filename: str) -> str:
 
 
 @router.post("", response_model=DocumentOut, status_code=201)
-def upload_document(file: UploadFile = File(...), db: Session = Depends(get_db)):
+def upload_document(file: FileDep, db: DbDep):
     ext = _validate_file(file.filename or "")
 
     # Read content with size limit
@@ -67,27 +73,23 @@ def upload_document(file: UploadFile = File(...), db: Session = Depends(get_db))
 
 
 @router.get("", response_model=list[DocumentOut])
-def list_documents(db: Session = Depends(get_db)):
+def list_documents(db: DbDep):
     return db.query(Document).order_by(Document.created_at.desc()).all()
 
 
 @router.delete("/{doc_id}", status_code=204)
-def delete_document(doc_id: str, db: Session = Depends(get_db)):
+def delete_document(doc_id: str, db: DbDep):
     doc = db.query(Document).filter(Document.id == doc_id).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
 
     # Remove from vector store
-    try:
+    with suppress(Exception):
         get_vector_store().delete_document(doc_id)
-    except Exception:  # noqa: BLE001
-        pass
 
     # Remove file
-    try:
+    with suppress(Exception):
         Path(doc.filepath).unlink(missing_ok=True)
-    except Exception:  # noqa: BLE001
-        pass
 
     db.delete(doc)
     db.commit()

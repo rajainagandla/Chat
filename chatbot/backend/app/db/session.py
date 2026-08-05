@@ -1,11 +1,15 @@
 """Database session management using SQLAlchemy."""
+
 from pathlib import Path
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
-# SQLite for development
-DATABASE_URL = "sqlite:///./data/chatbot.db"
+from ..config import settings
+from .base_class import Base
+
+# Use the configured database URL (PostgreSQL by default), SQLite for dev/tests.
+DATABASE_URL = settings.database_url
 
 # Ensure the data directory exists (SQLite needs the folder present).
 Path("./data").mkdir(parents=True, exist_ok=True)
@@ -17,8 +21,6 @@ engine = create_engine(
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-Base = declarative_base()
 
 
 def get_db():
