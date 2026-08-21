@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI-Powered Intelligent Chatbot (RAG)
 
 An AI-powered intelligent chatbot that answers natural-language questions from organization-specific documents (PDF, manuals, reports, policies, FAQs) using **Retrieval-Augmented Generation (RAG)** with Large Language Models (LLMs).
@@ -102,3 +103,6 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on push/PR to `main`/`develop`:
 
 ## License
 MIT
+=======
+# Chat
+>>>>>>> 6113fd28905e7f1c36769c94bb0c992ad1e7aac3
